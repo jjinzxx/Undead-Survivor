@@ -14,11 +14,14 @@ public class Player : MonoBehaviour
     Rigidbody2D rb;
     // 스프라이트 렌더러 컴포넌트
     SpriteRenderer sr;
+    // 애니메이션 상태 제어 컴포넌트
+    Animator anim;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
     
     // FixedUpdate: 물리 이동은 이곳에서
@@ -37,6 +40,10 @@ public class Player : MonoBehaviour
         {
             sr.flipX = inputVec.x < 0;
         }
+        
+        // 애니메이션도 후처리
+        anim.SetFloat("Speed", Mathf.Abs(inputVec.x));
+        //anim.SetBool("Speed", inputVec.magnitude); // 입력 벡터의 크기(magnitude)를 애니메이터의 변수로 전달.
     }
 
     void OnMove(InputValue value)
