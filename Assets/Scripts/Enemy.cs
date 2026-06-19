@@ -1,19 +1,17 @@
+using System;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     // 적(Enemy) 이동 속도 
     public float speed;
-    
     // 추적할 대상(Player) 물리 컴포넌트 target
     public Rigidbody2D target;
-    
     // 적(Enemy)의 생존여부
     bool isAlive;
     
     // 적(Enemy) 물리 컴포넌트 
     Rigidbody2D rigid;
-    
     // flipX을 통한 적 좌우 반전용
     SpriteRenderer sr;
 
@@ -22,6 +20,14 @@ public class Enemy : MonoBehaviour
         // 미리 컴포넌트들을 로드하여 메모리에 캐싱
         rigid = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+    }
+
+    // OnEnable(): Enemy 객체가 활성화 될 때마다 호출
+    private void OnEnable()
+    {
+        // 프리펩은 Player를 참조(할당) 하지 못하므로
+        // GameManager를 통해서 매번 플레이어를 target으로 할당
+        target = GameManager.instance.player.GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
@@ -38,7 +44,7 @@ public class Enemy : MonoBehaviour
         
         // 4. 잔여 속도 제거(관성 제거), 플레이어와 충돌하면 물리 속도를 0으로
         rigid.linearVelocity = Vector2.zero;
-        
     }
+    
 
 }

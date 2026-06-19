@@ -6,7 +6,6 @@ public class Player : MonoBehaviour
 {
     // 방향 키 입력 받는 벡터 (x = 좌우, y = 상하)
     public Vector2 inputVec;
-    
     // 이동속도
     public float speed;
     
