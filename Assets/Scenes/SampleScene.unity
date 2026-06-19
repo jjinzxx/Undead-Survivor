@@ -4451,6 +4451,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   player: {fileID: 596177735}
   pool: {fileID: 1499416874}
+  survivalTimeFont: {fileID: 12800000, guid: 4089dc13ecc3a9146afc9143362149d8, type: 3}
+  survivalTimeFontSize: 36
+  survivalTimeOffset: {x: 0, y: -32}
 --- !u!4 &482340665
 Transform:
   m_ObjectHideFlags: 0
