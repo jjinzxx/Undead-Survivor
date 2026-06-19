@@ -32,7 +32,7 @@ public class Spawner : MonoBehaviour
     void Spawn()
     {
         // 게임 매니저를 통해서 풀에서 적을 꺼냄
-        GameObject enemy = GameManager.instance.pool.Get(0);
+        GameObject enemy = GameManager.instance.pool.Get(Random.Range(0, GameManager.instance.pool.prefabs.Length));
         
         // 스폰 포인트 중 하나에 배치(랜덤으로, point 들에서만 시작되도록 0 제외)
         enemy.transform.position = spawnPoints[Random.Range(1, spawnPoints.Length)].position;
