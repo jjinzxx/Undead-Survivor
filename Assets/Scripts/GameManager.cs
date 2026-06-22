@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     // 흐르는 게임 시간 - 난이도 계산 용도/서바이벌 타임 계산 용도
     public float gameTime;
     // 최대 게임 시간 - 난이도 증가 기준
-    public float maxGameTime = 10f;
+    public float maxGameTime;
 
     private Text survivalTimeText;
 
