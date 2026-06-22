@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
         UpdateSurvivalTimeText();
     }
 
+    // ui 갱신 함수
     private void CreateSurvivalTimeUI()
     {
         GameObject canvasObject = new GameObject("Survival Time Canvas");
@@ -76,7 +77,6 @@ public class GameManager : MonoBehaviour
 
         UpdateSurvivalTimeText();
     }
-
     private void UpdateSurvivalTimeText()
     {
         int minutes = Mathf.FloorToInt(gameTime / 60f);
