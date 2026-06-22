@@ -12,7 +12,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int survivalTimeFontSize = 36;
     [SerializeField] private Vector2 survivalTimeOffset = new Vector2(0f, -32f);
 
-    public float survivalTime;
+    // 흐르는 게임 시간 - 난이도 계산 용도/서바이벌 타임 계산 용도
+    public float gameTime;
+    // 최대 게임 시간 - 난이도 증가 기준
+    public float maxGameTime = 10f;
 
     private Text survivalTimeText;
 
@@ -24,7 +27,15 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        survivalTime += Time.deltaTime;
+        // 매 프레임마다 실제 흐른 시간을 누적
+        gameTime += Time.deltaTime;
+        
+        // 최대 시간을 넘지 않도록 고정 (게임 종료 등 처리에 활용)
+        if (gameTime > maxGameTime)
+        {
+            gameTime = maxGameTime;
+        }
+        
         UpdateSurvivalTimeText();
     }
 
@@ -68,8 +79,8 @@ public class GameManager : MonoBehaviour
 
     private void UpdateSurvivalTimeText()
     {
-        int minutes = Mathf.FloorToInt(survivalTime / 60f);
-        int seconds = Mathf.FloorToInt(survivalTime % 60f);
+        int minutes = Mathf.FloorToInt(gameTime / 60f);
+        int seconds = Mathf.FloorToInt(gameTime % 60f);
 
         survivalTimeText.text = $"{minutes:00}:{seconds:00}";
     }
