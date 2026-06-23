@@ -65,6 +65,30 @@ public class Enemy : MonoBehaviour
     {
         sr.flipX = target.position.x < rigid.position.x;
     }
+    
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // 총알(Bullet 태그)에 맞은 경우에 처리하기 위한 필터(벽, 플레이어 등 무시)
+        if (!collision.CompareTag("Bullet"))
+            return;
+        // 충돌된 Bullet 컴포넌트의 데미지 만큼 체력 감소
+        health -= collision.GetComponent<Bullet>().damage;
+
+        if (health > 0)
+        {
+            // 피격 반응 추가
+        }
+        else
+        {
+            Dead();
+        }
+    }
+
+    // 적 사망은 객체 Destroy가 아니라 오브젝트 풀에서 재사용 하기 위해 비활성화 처리
+    void Dead()
+    {
+        gameObject.SetActive(false);
+    }
 
     // 난이도 데이터를 파라미터로 전달받아 적 객체 초기화
     public void Init(SpawnData sd)
