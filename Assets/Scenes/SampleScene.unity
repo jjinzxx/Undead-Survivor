@@ -119,6 +119,55 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &342124264
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 342124265}
+  - component: {fileID: 342124266}
+  m_Layer: 0
+  m_Name: Weapon 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &342124265
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342124264}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 596177732}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &342124266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 342124264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7695761910cfb174c8b9bbf6f24bfd00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  id: 1
+  prefavId: 2
+  damage: 10
+  count: 1
+  speed: 0
 --- !u!1 &428271596
 GameObject:
   m_ObjectHideFlags: 0
@@ -4776,6 +4825,7 @@ GameObject:
   - component: {fileID: 596177735}
   - component: {fileID: 596177734}
   - component: {fileID: 596177736}
+  - component: {fileID: 596177737}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -4886,6 +4936,7 @@ Transform:
   - {fileID: 1231401411}
   - {fileID: 796821898}
   - {fileID: 2143898806}
+  - {fileID: 342124265}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!70 &596177733
@@ -4969,6 +5020,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   inputVec: {x: 0, y: 0}
   speed: 3
+  scanner: {fileID: 0}
 --- !u!95 &596177736
 Animator:
   serializedVersion: 7
@@ -4991,6 +5043,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &596177737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 596177729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ab5593541264722b56cf5f626b3c2fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scanner
+  scanRange: 5
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  nearestTarget: {fileID: 0}
 --- !u!1 &610784536
 GameObject:
   m_ObjectHideFlags: 0
@@ -9763,6 +9832,7 @@ MonoBehaviour:
   prefabs:
   - {fileID: 1802506655918656134, guid: 25c9353a108953142846b5712480554f, type: 3}
   - {fileID: 2384522265295645839, guid: 6793dedf29b008144877791bece045c9, type: 3}
+  - {fileID: 4869565994601811221, guid: f2381fca6a0763c4d873a7c28cdb15fa, type: 3}
 --- !u!4 &1499416875
 Transform:
   m_ObjectHideFlags: 0

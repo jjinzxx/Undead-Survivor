@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Scanner : MonoBehaviour
 {
@@ -35,5 +36,12 @@ public class Scanner : MonoBehaviour
                         }
                 }
                 return result;
+        }
+
+        // 씬 뷰어 스캔 범위 원을 그려주기 위함 (빌드하면 안보임)
+        private void OnDrawGizmos()
+        {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(transform.position, scanRange);
         }
 }
