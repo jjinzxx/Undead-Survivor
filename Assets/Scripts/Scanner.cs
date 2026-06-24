@@ -12,7 +12,7 @@ public class Scanner : MonoBehaviour
         {
                 // CircleCastAll - 원(반지름)을 쏘면서 경로에 닿는 콜라이더를 전부 배열로 반환
                 // 캐릭터는 가만히 있고 적이 오는것이기 때문에 방향=0, 거리=0
-                Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0, targetLayer);
+                targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0, targetLayer);
 
                 nearestTarget = GetNearestTarget();
         }
