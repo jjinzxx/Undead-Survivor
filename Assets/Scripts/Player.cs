@@ -4,23 +4,20 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    // 방향 키 입력 받는 벡터 (x = 좌우, y = 상하)
-    public Vector2 inputVec;
-    // 이동속도
-    public float speed;
+    public Vector2 inputVec; // 방향 키 입력 받는 벡터 (x = 좌우, y = 상하)
+    public float speed; // 이동속도
+    public Scanner scanner; // 가장 가까운 적을 찾는 스캐너
     
-    // 객체 물리 컴포넌트 
-    Rigidbody2D rb;
-    // 스프라이트 렌더러 컴포넌트
-    SpriteRenderer sr;
-    // 애니메이션 상태 제어 컴포넌트
-    Animator anim;
+    Rigidbody2D rb; // 객체 물리 컴포넌트 
+    SpriteRenderer sr; // 스프라이트 렌더러 컴포넌트
+    Animator anim; // 애니메이션 상태 제어 컴포넌트
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        scanner = GetComponent<Scanner>();
     }
     
     // FixedUpdate: 물리 이동은 이곳에서
