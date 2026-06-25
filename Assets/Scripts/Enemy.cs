@@ -9,23 +9,24 @@ public class Enemy : MonoBehaviour
     // 현재 체력, 최대 체력
     public float health;
     public float maxHealth;
+    // 적(Enemy)의 생존여부
+    bool isAlive;
+
     
     // 몬스터 종류별 애니메이션 컨트롤러 배열 (Init 함수에서 spriteType으로 갈아끼움)
     public RuntimeAnimatorController[] animCon;
-    
     // 애니메이터 - 몬스터 종류 전환
     Animator anim;
     
     // 추적할 대상(Player) 물리 컴포넌트 target
     public Rigidbody2D target;
-    // 적(Enemy)의 생존여부
-    bool isAlive;
-    
+    // 사망 시 충돌 안되도록 충돌 콜라이더 컴포넌트
+    private Collider2D coll;
     // 적(Enemy) 물리 컴포넌트 
     Rigidbody2D rigid;
+    
     // flipX을 통한 적 좌우 반전용
     SpriteRenderer sr;
-    
     // Coroutine에서 쓸 "물리 프레임 대기"
     private WaitForFixedUpdate wait;
 
@@ -33,6 +34,7 @@ public class Enemy : MonoBehaviour
     {
         // 미리 컴포넌트들을 로드하여 메모리에 캐싱
         rigid = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         wait = new WaitForFixedUpdate();
@@ -48,15 +50,20 @@ public class Enemy : MonoBehaviour
         // 풀에서 다시 사용될 때(죽음->리스폰)
         isAlive = true;
         health = maxHealth;
+        
+        // 사망에서 바뀌었던 상태를 모두 원복(재사용위해)
+        isAlive = true;
+        coll.enabled = true;
+        rigid.simulated = true;
+        sr.sortingOrder = 9;    
+        anim.SetBool("Dead", false);
     }
 
     void FixedUpdate()
     {
         // 죽은 상태(!isAlive) 히트 상태(넉백 중)인 상태에는 아래 추적 이동을 멈충
-        if (!isAlive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
-        {
-            return;
-        }
+        if (!isAlive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit")) return;
+        
         // 1. 방향 구하기 (목표위치 - 내 위치) -> 플레이어 쪽을 바라보는 벡터
         Vector2 dirVec = target.position - rigid.position;
         
@@ -73,6 +80,7 @@ public class Enemy : MonoBehaviour
 
     void LateUpdate()
     {
+        if(!isAlive) return;
         sr.flipX = target.position.x < rigid.position.x;
     }
     
@@ -93,7 +101,12 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Dead();
+            // Dead();
+            isAlive = false;        // 시체의 이동, 반응 정지(FixedUpate 필터용)
+            coll.enabled = false;   // 시체의 충돌 제거
+            rigid.simulated = false;// 물리 정지(밀리거나 움직임 정지)
+            sr.sortingOrder = 8;    // 정렬을 내림
+            anim.SetBool("Dead", true); // 사망 애니메이션 재생을 위한 파라미터 값 전달
         }
     }
 
@@ -118,7 +131,6 @@ public class Enemy : MonoBehaviour
         yield return wait; // 다음 물리 프레임까지 1프레임을 대기
         
         // 플레이어 반대 방향으로 충격 = Enemy 위치 - Player 위치
-        //Vector3 playerPos = GameManager.instance.player.GetComponent<Transform>().position;
         Vector3 playerPos = GameManager.instance.player.transform.position;
         Vector3 dirVec = transform.position - playerPos;
         
