@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -24,6 +25,9 @@ public class Enemy : MonoBehaviour
     Rigidbody2D rigid;
     // flipX을 통한 적 좌우 반전용
     SpriteRenderer sr;
+    
+    // Coroutine에서 쓸 "물리 프레임 대기"
+    private WaitForFixedUpdate wait;
 
     void Awake()
     {
@@ -31,6 +35,7 @@ public class Enemy : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        wait = new WaitForFixedUpdate();
     }
 
     // OnEnable(): Enemy 객체가 활성화 될 때마다 호출
@@ -47,6 +52,11 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        // 죽은 상태(!isAlive) 히트 상태(넉백 중)인 상태에는 아래 추적 이동을 멈충
+        if (!isAlive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        {
+            return;
+        }
         // 1. 방향 구하기 (목표위치 - 내 위치) -> 플레이어 쪽을 바라보는 벡터
         Vector2 dirVec = target.position - rigid.position;
         
@@ -66,6 +76,7 @@ public class Enemy : MonoBehaviour
         sr.flipX = target.position.x < rigid.position.x;
     }
     
+    // 트리거에 무언가 닿으면 호출
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // 총알(Bullet 태그)에 맞은 경우에 처리하기 위한 필터(벽, 플레이어 등 무시)
@@ -76,7 +87,9 @@ public class Enemy : MonoBehaviour
 
         if (health > 0)
         {
-            // 피격 반응 추가
+            // 피격 반응
+            anim.SetTrigger("Hit");       // Hit 애니메이션 재생
+            StartCoroutine(KnockBack()); // 넉백 코루틴 실행
         }
         else
         {
@@ -99,4 +112,17 @@ public class Enemy : MonoBehaviour
         health = sd.health;
     }
 
+    // KnockBack : 맞는 순간 물리적으로 밀려나는 코루틴
+    IEnumerator KnockBack()
+    {
+        yield return wait; // 다음 물리 프레임까지 1프레임을 대기
+        
+        // 플레이어 반대 방향으로 충격 = Enemy 위치 - Player 위치
+        //Vector3 playerPos = GameManager.instance.player.GetComponent<Transform>().position;
+        Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 dirVec = transform.position - playerPos;
+        
+        // 그 방향으로 순간 물리 충격(Impulse)를 가함
+        rigid.AddForce(dirVec.normalized * 3,  ForceMode2D.Impulse);
+    }
 }
