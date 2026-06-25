@@ -4,6 +4,8 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    
+    [Header("Game Objects")]
     public Player player;
     public PoolManager pool;
 
@@ -12,12 +14,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int survivalTimeFontSize = 36;
     [SerializeField] private Vector2 survivalTimeOffset = new Vector2(0f, -32f);
 
-    // 흐르는 게임 시간 - 난이도 계산 용도/서바이벌 타임 계산 용도
-    public float gameTime;
-    // 최대 게임 시간 - 난이도 증가 기준
-    public float maxGameTime;
-
-    private Text survivalTimeText;
+    [Header("Play Time")]
+    public float gameTime;      // 흐르는 게임 시간 - 난이도 계산 용도/서바이벌 타임 계산 용도
+    public float maxGameTime;   // 최대 게임 시간 - 난이도 증가 기준
+    private Text survivalTimeText; // 시간 표시용 변수
+    
+    [Header("Game Player Data")]
+    public int level;
+    public int kill;
+    public int exp;
+    public int[] nextExp = { 3, 5, 10, 20, 150, 210, 280, 360, 450, 600 }; // 임시 레벨업 테이블
 
     private void Awake()
     {
@@ -83,5 +89,16 @@ public class GameManager : MonoBehaviour
         int seconds = Mathf.FloorToInt(gameTime % 60f);
 
         survivalTimeText.text = $"{minutes:00}:{seconds:00}";
+    }
+    
+    // 경험치 획득 및 레벨업 로직
+    public void GetExp()
+    {
+        exp++;
+        if (exp == nextExp[level])
+        {
+            level++;
+            exp = 0;
+        }
     }
 }
