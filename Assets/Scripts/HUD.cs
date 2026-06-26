@@ -38,10 +38,10 @@ public class HUD : MonoBehaviour
                 break;
             case InfoType.Level:
                 // string.Format: {0:F0} -> 변수의 값을 0인자에 소수점 없는 숫자로 대입
-                myText.text = string.Format("Level: {0:F0}", GameManager.instance.level);
+                myText.text = string.Format("Lv. {0:F0}", GameManager.instance.level);
                 break;
             case InfoType.Kill:
-                myText.text = string.Format("Kills: {0:F0}", GameManager.instance.kill);
+                myText.text = string.Format("{0:F0}", GameManager.instance.kill);
                 break;
             case InfoType.Time:
                 // 남은 시간 = 최대 시간 - 경과 시간
