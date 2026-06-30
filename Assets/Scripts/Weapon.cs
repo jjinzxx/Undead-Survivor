@@ -9,13 +9,13 @@ public class Weapon : MonoBehaviour
     public int count;       // 근접 = 칼날 개수 / 원거리 = 관통 횟수
     public float speed;     // 근접 = 회전 속도 / 원거리 = 연사 속도
     
-    private float timer;     // 원거리 발사 타이머
-    private Player player;   // player.Scanner 대상에 접근하기 위함
+    float timer; // 원거리 발사 타이머
+    Player player; // player.Scanner 대상에 접근하기 위함
 
     private void Awake()
     {
         // 부모 객체의 자식 컴포넌트들을 모두 가져오기 위해서
-        player = GetComponentInParent<Player>();
+        player = GameManager.instance.player;
     }
     
 
@@ -33,7 +33,7 @@ public class Weapon : MonoBehaviour
             case 1:
                 // 타이머가 연사속도(speed)를 넘으면 발사
                 timer += Time.deltaTime;
-                if (timer >= speed)
+                if (timer > speed)
                 {
                     timer = 0;
                     Fire();
@@ -81,18 +81,24 @@ public class Weapon : MonoBehaviour
             default:
                 break;
         }
+        
+        // 새 무기가 생성 될 때, 이미 강화된 기어 효과(공속)등이 무기에도 적용되도록 메시지 전달
+        // 받을 기어가 없는 경우
+        player.BroadcastMessage("ApplyGear");
     }
 
-    public void LevelUP(float nextDamage, int nextCount)
+    public void LevelUP(float damage, int count)
     {
-        this.damage = nextDamage;
-        this.count = nextCount;
+        this.damage = damage;
+        this.count = count;
 
         // 근접 무기는 칼날 개수 재배치
         if (id == 0)
         {
             Arrange();
         }
+        // 강화된 무기 위에 기어 효과를 다시 입힘
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
     
     // 칼날을 풀에서 꺼내서 플레이어 주위에 원형으로 균등 배치
@@ -101,10 +107,18 @@ public class Weapon : MonoBehaviour
         // 칼날 count개를 풀에서 꺼냄
         for (int idx = 0; idx < count; idx++)
         {
+            Transform bullet;
             // 풀에서 총알(Bullet)을 꺼내서, Transform을 확보
-            Transform bullet = GameManager.instance.pool.Get(prefavId).transform;
-            // Weapon의 자식으로 설정
-            bullet.parent = transform;
+            if (idx < transform.childCount)
+            {
+                bullet = transform.GetChild(idx);
+            }
+            else
+            {
+                bullet = GameManager.instance.pool.Get(prefavId).transform;
+                bullet.parent = transform;
+            }
+            
             // 부모 기준 위치, 회전 초기화(재사용 사 이전 값을 제거)
             bullet.localPosition = Vector3.zero;
             bullet.localRotation = Quaternion.identity;
