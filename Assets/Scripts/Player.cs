@@ -4,13 +4,14 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public Vector2 inputVec; // 방향 키 입력 받는 벡터 (x = 좌우, y = 상하)
-    public float speed; // 이동속도
-    public Scanner scanner; // 가장 가까운 적을 찾는 스캐너
+    public Vector2 inputVec;    // 방향 키 입력 받는 벡터 (x = 좌우, y = 상하)
+    public float speed;         // 이동속도
+    public Scanner scanner;     // 가장 가까운 적을 찾는 스캐너
     
-    Rigidbody2D rb; // 객체 물리 컴포넌트 
-    SpriteRenderer sr; // 스프라이트 렌더러 컴포넌트
-    Animator anim; // 애니메이션 상태 제어 컴포넌트
+    Rigidbody2D rb;         // 객체 물리 컴포넌트 
+    SpriteRenderer sr;      // 스프라이트 렌더러 컴포넌트
+    Animator anim;          // 애니메이션 상태 제어 컴포넌트
+    public Hand[] hands;    // 무기를 드는 양손 컴포넌트(왼손/오른손)
 
     void Awake()
     {
@@ -18,6 +19,9 @@ public class Player : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
+        // 자식의 Hand 들을 가져옴, 인자 true -> 비활성 손도 포함해서 가져오게 됨
+        // (손은 평소엔 비활성 상태였다가 무기가 생기면 활성, 비활성 상태도 미리 배열에 담기 위함)
+        hands = GetComponentsInChildren<Hand>(true);
     }
     
     // FixedUpdate: 물리 이동은 이곳에서

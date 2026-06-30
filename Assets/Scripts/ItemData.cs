@@ -23,4 +23,5 @@ public class ItemData : ScriptableObject
 
     [Header("Weapon Data")] 
     public GameObject projectile; // 무기가 사용할 투사체 프리팹
+    public Sprite hand;           // 이 무기를 든 손 모양 스프라이트
 }
