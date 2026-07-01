@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     // FixedUpdate: 물리 이동은 이곳에서
     private void FixedUpdate()
     {
+        if (!GameManager.instance.isLive) return; // 일시정지 상태에서는 중단
+        
         // 다음에 이동할 양 = 방향 * 속도 * 프레임 시간
         Vector2 nextVec = inputVec.normalized * (speed * Time.fixedDeltaTime);
         // 현재 위치 + 이동량
@@ -36,6 +38,8 @@ public class Player : MonoBehaviour
     // LateUpdate: 모든 업데이트가 끝난 뒤 실행. 방향 반전같은 것은 후처리에 적합
     private void LateUpdate()
     {
+        if (!GameManager.instance.isLive) return; // 일시정지 상태에서는 중단
+        
         if (inputVec.x != 0)
         {
             sr.flipX = inputVec.x < 0;

@@ -32,7 +32,7 @@ public class HUD : MonoBehaviour
                 float curExp = GameManager.instance.exp;
                 // 무한 레벨업으로 레벨이 배열 길이를 넘는 경우, 인덱스 초과 IndexOutOfRange 예외가 발생 할 수 있음
                 // Mathf.Min 으로 마지막 인덱스를 고정하기 위함 -> level이 배열 범위 안이면 그대로, 초과하면 마지막 인덱스를 사용.
-                int expIndex = Mathf.Min(GameManager.instance.level, GameManager.instance.nextExp.Length - 1);
+                int expIndex = Mathf.Min(GameManager.instance.level, GameManager.instance.nextExp.Count - 1);
                 float maxExp = GameManager.instance.nextExp[expIndex];
                 mySlider.value = curExp / maxExp;
                 break;

@@ -61,6 +61,8 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!GameManager.instance.isLive) return; // 일시정지 상태에서는 추적 중단
+        
         // 죽은 상태(!isAlive) 히트 상태(넉백 중)인 상태에는 아래 추적 이동을 멈충
         if (!isAlive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit")) return;
         
@@ -80,6 +82,7 @@ public class Enemy : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!GameManager.instance.isLive) return; // 일시정지 상태에서는 중단
         if(!isAlive) return;
         sr.flipX = target.position.x < rigid.position.x;
     }

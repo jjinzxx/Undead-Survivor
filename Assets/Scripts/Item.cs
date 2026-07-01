@@ -35,7 +35,9 @@ public class Item : MonoBehaviour
     // OnEnable() : 오브젝트가 활성화 되었을 때, 자동 호출 - 레벨업 창이 뜰 때만 갱신
     private void OnEnable()
     {
-        textLevel.text = "LV." + level; // 현재 강화 레벨
+        //textLevel.text = "LV." + level; // 현재 강화 레벨
+        //textLevel.text = string.Format("Lv. {0:00}", level);
+        textLevel.text = $"Lv. {level:00}";
 
         switch (data.itemType)
         {
