@@ -9,8 +9,10 @@ public class Item : MonoBehaviour
     public Weapon weapon;   // 이 아이템이 만들거나 관리하고 있는 무기
     public Gear gear;       // 이 아이템이 관리하는 기어
 
-    private Image icon; // 버튼에 표시할 아이템 아이콘
-    Text textLevel;     // 버튼에 표시할 아이템 레벨
+    private Image icon;         // 버튼에 표시할 아이템 아이콘
+    private Text textLevel;     // 버튼에 표시할 아이템 레벨
+    private Text textName;      // 버튼에 표시할 아이템 이름
+    private Text textDesc;      // 버튼에 표시할 아이템 설명
 
     private void Awake()
     {
@@ -18,16 +20,45 @@ public class Item : MonoBehaviour
         icon = GetComponentsInChildren<Image>()[1];
         icon.sprite = data.itemIcon; // 데이터의 아이콘 그림으로 세팅
         
-        // 텍스트는 버튼이 하나뿐이라서 [0]
-        textLevel = GetComponentsInChildren<Text>()[0];
+        // 텍스트 버튼 배열로 받아와서 메모리에 뽑아둠
+        // 버튼 속에 있는 TEXT들을 배열로 가져옴 계층 구조 순서대로 (인스펙터에서 순서가 바뀌면 여기서도 바뀌어야 함)
+        Text[] texts = GetComponentsInChildren<Text>();
+        textLevel = texts[0];
+        textName = texts[1];
+        textDesc = texts[2];
+        
+        // 이름은 한번 정해지면 안바뀌므로 Awake에서 1회만 셋팅
+        textName.text = data.itemName;
     }
 
-    private void LateUpdate()
+    // 생명주기 함수 중 하나
+    // OnEnable() : 오브젝트가 활성화 되었을 때, 자동 호출 - 레벨업 창이 뜰 때만 갱신
+    private void OnEnable()
     {
-        textLevel.text = "Lv." + (level+1).ToString();
+        textLevel.text = "LV." + level; // 현재 강화 레벨
+
+        switch (data.itemType)
+        {
+            case ItemData.ItemType.Malee:
+            case ItemData.ItemType.Range:
+                // 무기: {0} = 데미지%, {1} = 갯수/관통갯수
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+                break;
+            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Shoe:
+                // 기어: {0} = 증가율%
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100);
+                    break;
+            case ItemData.ItemType.Heal:
+                // 회복: 인자 없음
+                textDesc.text = string.Format(data.itemDesc);
+                break;
+            default:
+                break;
+        }
     }
-    
-    // OnClick Event
+
+    // OnClick() Event
     public void OnClick()
     {
         // 아이템 종류별로 분기

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemType: 1
   itemId: 1
-  itemName: "\uC5FD\uCD1D"
-  itemDesc: 
   itemIcon: {fileID: -205726582, guid: d71a3dc7aa20fad4f9a99fc76a9254ba, type: 3}
+  itemName: "\uC5FD\uCD1D"
+  itemDesc: "\uB370\uBBF8\uC9C0 {0}% \uC99D\uAC00\n\uAD00\uD1B5\uB825 {1} \uC99D\uAC00"
   baseDamage: 3
   baseCount: 0
   damages:

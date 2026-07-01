@@ -11,9 +11,10 @@ public class ItemData : ScriptableObject
     [Header("Main info")]
     public ItemType itemType;   // 생성될 아이템의 종류
     public int itemId;          // 아이템 고유 번호
-    public string itemName;     // 아이템 이름 (UI 표시)
-    public string itemDesc;     // 아이템 설명 (UI 표시)
     public Sprite itemIcon;     // 아이템 아이콘 (UI 표시)
+    public string itemName;     // 아이템 이름 (UI 표시)
+    [TextArea] // 인스펙터에서 여러줄을 입력 가능하도록 설정 하기 위함
+    public string itemDesc;     // 아이템 설명 (UI 표시)
     
     [Header("Level Data")]
     public float baseDamage;    // 0 레벨 기본 데미지
