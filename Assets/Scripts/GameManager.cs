@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     // public으로 바꾸는 이유는 인스펙터에 나타나고, OnClick Event 목록에 보여주기 위함.
     public void GameStart()
     {
-        isLive = true;
+        Resume();
         health = maxHealth;         // 게임 시작 시 체력을 최대 체력으로 초기화
         uiLevelUp.Select(0);   // 기본무기 (0: 삽) 제공
     }
