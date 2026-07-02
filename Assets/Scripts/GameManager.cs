@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +10,8 @@ public class GameManager : MonoBehaviour
     [Header("Game Objects")]
     public Player player;
     public PoolManager pool;
-    public LevelUp uiLevelUp;   // 레벨업 선택 UI
+    public LevelUp uiLevelUp;       // 레벨업 선택 UI
+    public GameObject uiGameOver;   // 게임 오버/승리 결과창
 
     [Header("Play Time")] 
     public bool isLive;         // 일시정지용
@@ -19,20 +22,42 @@ public class GameManager : MonoBehaviour
     public int level;
     public int kill;
     public int exp;
-    public List<int> nextExp = new List<int> { 3, 5, 10, 20, 150, 210, 280, 360, 450, 600 }; // 동적 배열을 위해 일반 배열 대신 리스트 자료구조 변경
-    public int health;
-    public int maxHealth = 100;
+    public List<int> nextExp = new List<int> { 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 }; // 동적 배열을 위해 일반 배열 대신 리스트 자료구조 변경
+    public float health;
+    public float maxHealth = 100;
 
     private void Awake()
     {
         instance = this;
     }
 
-    void Start()
+    // 기본적으로 아무것도 안쓰면 private.
+    // public으로 바꾸는 이유는 인스펙터에 나타나고, OnClick Event 목록에 보여주기 위함.
+    public void GameStart()
     {
         isLive = true;
-        uiLevelUp.Select(0);   // 기본무기 (0: 삽) 제공
         health = maxHealth;         // 게임 시작 시 체력을 최대 체력으로 초기화
+        uiLevelUp.Select(0);   // 기본무기 (0: 삽) 제공
+    }
+
+    // 사망 시 호출
+    public void GameOver()
+    {
+        StartCoroutine(GameOverCoroutine());
+    }
+
+    IEnumerator GameOverCoroutine()
+    {
+        isLive = false;
+        yield return new WaitForSeconds(0.5f);  // 묘비 애니메이션이 나타날 시간 확보
+        uiGameOver.SetActive(true);             // 결과창 켜기
+        Stop();                                 // 시간 정지
+    }
+
+    // Back 버튼이 호출
+    public void BackMenu()
+    {
+        SceneManager.LoadScene(0); // 0번에 등록된 씬 롣,
     }
 
     private void Update()

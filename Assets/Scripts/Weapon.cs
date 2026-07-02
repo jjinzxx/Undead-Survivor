@@ -78,7 +78,7 @@ public class Weapon : MonoBehaviour
                 Arrange(); // 칼날 원형 배치
                 break;
             case 1:
-                speed = 0.3f; // 연사속도 (0.3초마다 발사)
+                speed = 0.5f; // 연사속도 (0.5초마다 발사)
                 break;
             default:
                 break;
