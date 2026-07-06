@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     public Player player;
     public PoolManager pool;
     public LevelUp uiLevelUp;       // 레벨업 선택 UI
-    public GameObject uiGameOver;   // 게임 오버/승리 결과창
+    public GameResult uiResult;   // 게임 오버/승리 결과창
+    public GameObject enemyCleaner; // 승리시 남은 몬스터를 일괄 제거하기 위함(KillZone)
 
     [Header("Play Time")] 
     public bool isLive;         // 일시정지용
@@ -43,14 +44,30 @@ public class GameManager : MonoBehaviour
     // 사망 시 호출
     public void GameOver()
     {
-        StartCoroutine(GameOverCoroutine());
+        StartCoroutine(GameOverRoutine());
     }
 
-    IEnumerator GameOverCoroutine()
+    IEnumerator GameOverRoutine()
     {
         isLive = false;
         yield return new WaitForSeconds(0.5f);  // 묘비 애니메이션이 나타날 시간 확보
-        uiGameOver.SetActive(true);             // 결과창 켜기
+        uiResult.gameObject.SetActive(true);             // 결과창 켜기
+        uiResult.GameOver();
+        Stop();                                 // 시간 정지
+    }
+
+    public void GameVictory()
+    {
+        StartCoroutine(GameVictoryRoutine());
+    }
+    
+    IEnumerator GameVictoryRoutine()
+    {
+        isLive = false;
+        enemyCleaner.SetActive(true);           // 몬스터 일괄 제거
+        yield return new WaitForSeconds(0.5f);  // 처치 애니메이션 볼 시간 확보
+        uiResult.gameObject.SetActive(true);  // 결과 창 보기
+        uiResult.GameVictory();               //
         Stop();                                 // 시간 정지
     }
 
@@ -78,6 +95,8 @@ public class GameManager : MonoBehaviour
     // 경험치 획득 및 레벨업 로직
     public void GetExp()
     {
+        if(!isLive) return;
+        
         exp++;
         if (exp == nextExp[level])
         {
