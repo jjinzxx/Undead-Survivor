@@ -157,5 +157,7 @@ public class Weapon : MonoBehaviour
         
         // Init 값 주입
         bullet.GetComponent<Bullet>().Init(damage, count, dir);
+        
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }

@@ -39,6 +39,9 @@ public class GameManager : MonoBehaviour
         Resume();
         health = maxHealth;         // 게임 시작 시 체력을 최대 체력으로 초기화
         uiLevelUp.Select(0);   // 기본무기 (0: 삽) 제공
+        
+        AudioManager.instance.PlayBgm(true); // 배경음 시작
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
     }
 
     // 사망 시 호출
@@ -54,6 +57,9 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);    // 결과창 켜기
         uiResult.GameOver();
         Stop();                                 // 시간 정지
+        
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Lose); // 패배 효과음
+        AudioManager.instance.PlayBgm(false); // 배경음 정지
     }
 
     public void GameVictory()
@@ -70,6 +76,9 @@ public class GameManager : MonoBehaviour
         uiResult.gameObject.SetActive(true);    // 결과 창 보기
         uiResult.GameVictory();                 //
         Stop();                                 // 시간 정지
+        
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Win); // 패배 효과음
+        AudioManager.instance.PlayBgm(false); // 배경음 정지
     }
 
     // Back 버튼이 호출

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 // 오디오 매니저 - BGM, SFX 한 곳에서 관리하는 싱글톤
 public class AudioManager : MonoBehaviour
@@ -90,9 +91,15 @@ public class AudioManager : MonoBehaviour
             // 이미 재생중인 채널 건너뜀
             if (sfxPlayers[loopIndex].isPlaying) continue;
             
+            // Hit, melee는 클립이 2개 -> 둘중 하나 랜덤 (단조로움 방지)
+            int ranIndex = 0;
+            if (sfx == Sfx.Hit || sfx == Sfx.Melee) 
+                ranIndex = Random.Range(0, 2);
+            
+            
             // 비어있는 채널도달
             channelIndex = loopIndex; // 사용 가능한 채널
-            sfxPlayers[loopIndex].clip = sfxClips[(int)sfx]; // 종류에 맞는 클립 끼움
+            sfxPlayers[loopIndex].clip = sfxClips[(int)sfx + ranIndex]; // 종류에 맞는 클립 끼움
             sfxPlayers[loopIndex].Play();
             break;
         }

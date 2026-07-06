@@ -20,6 +20,9 @@ public class LevelUp : MonoBehaviour
         Next(); // 랜덤 3개 아이템 배치
         rect.localScale = Vector3.one;  // 1,1,1 -> 보임
         GameManager.instance.Stop();    // 게임 일시정지
+        
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp); // 레벨업 효과음
+        AudioManager.instance.EffectBgm(true); // 배경음 먹먹 효과 적용
     }
     
     // 창 숨기기
@@ -27,6 +30,9 @@ public class LevelUp : MonoBehaviour
     {
         rect.localScale = Vector3.zero; // 0,0,0 -> 숨김
         GameManager.instance.Resume();  // 게임 재개
+        
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select); // 선택 효과음
+        AudioManager.instance.EffectBgm(false); // 배경음 먹먹 효과 해제
     }
 
     // 버튼 클릭을 아이템에 위임 - GameManager가 기본무기 지급에 사용
