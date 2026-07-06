@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
     {
         isLive = false;
         yield return new WaitForSeconds(0.5f);  // 묘비 애니메이션이 나타날 시간 확보
-        uiResult.gameObject.SetActive(true);             // 결과창 켜기
+        uiResult.gameObject.SetActive(true);    // 결과창 켜기
         uiResult.GameOver();
         Stop();                                 // 시간 정지
     }
@@ -64,10 +64,11 @@ public class GameManager : MonoBehaviour
     IEnumerator GameVictoryRoutine()
     {
         isLive = false;
+        enemyCleaner.transform.position = player.transform.position; // 킬존을 플레이어 위치로 옮기기
         enemyCleaner.SetActive(true);           // 몬스터 일괄 제거
         yield return new WaitForSeconds(0.5f);  // 처치 애니메이션 볼 시간 확보
-        uiResult.gameObject.SetActive(true);  // 결과 창 보기
-        uiResult.GameVictory();               //
+        uiResult.gameObject.SetActive(true);    // 결과 창 보기
+        uiResult.GameVictory();                 //
         Stop();                                 // 시간 정지
     }
 
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviour
         if (gameTime > maxGameTime)
         {
             gameTime = maxGameTime;
+            GameVictory();
         }
         
     }
