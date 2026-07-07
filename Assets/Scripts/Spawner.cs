@@ -13,12 +13,17 @@ public class Spawner : MonoBehaviour
     private float timer;
     // 현재 난이도 (게임 시간에 따라 변함)
     private int difficulty;
+    // 난이도 한개의 단계가 유지되는 시간
+    private float levelTime;
     
     private void Awake()
     {
         // 스포너 자신 + 자식트랜스폼을 한번에 가져옴
         // GetComponentsInChildren's' 복수형 주의
         spawnPoints = GetComponentsInChildren<Transform>();
+        
+        // 기존 10초 대신, 전체 게임시간에서 난이도 단계로 균등 분배
+        levelTime = GameManager.instance.maxGameTime / spawnData.Length;
     }
 
     void Update()
@@ -29,7 +34,7 @@ public class Spawner : MonoBehaviour
         timer += Time.deltaTime;
         
         // 난이도 상승
-        difficulty = (int)(GameManager.instance.gameTime / 10f);
+        difficulty = (int)(GameManager.instance.gameTime / levelTime);
         
         // 난이도가 데이터 개수를 넘지 않도록 제한 (배열범위 초과 방지)
         if (difficulty >= spawnData.Length)

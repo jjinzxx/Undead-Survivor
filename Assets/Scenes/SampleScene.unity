@@ -5924,13 +5924,15 @@ MonoBehaviour:
   uiLevelUp: {fileID: 831789883}
   uiResult: {fileID: 949192349}
   enemyCleaner: {fileID: 861299122}
+  uiGameStart: {fileID: 1262998016}
+  uiHUD: {fileID: 1203664402}
   isLive: 0
   gameTime: 0
-  maxGameTime: 10
+  maxGameTime: 300
   level: 0
   kill: 0
   exp: 0
-  nextExp: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
+  nextExp: 03000000050000000a00000014000000320000006400000096000000d20000001801000068010000
   health: 0
   maxHealth: 100
 --- !u!4 &482340665
@@ -18264,7 +18266,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1681240466}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 482340664}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: GameRetry
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1681240466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23917,7 +23931,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1962310650}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 482340664}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: GameQuit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1962310650
 MonoBehaviour:
   m_ObjectHideFlags: 0

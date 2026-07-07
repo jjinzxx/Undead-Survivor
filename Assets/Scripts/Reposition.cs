@@ -38,7 +38,7 @@ public class Reposition : MonoBehaviour
                 if(Mathf.Abs(diffX) > Mathf.Abs(diffY))
                     transform.Translate(Vector3.right*dirX*40);
                 else
-                    transform.Translate(Vector3.left*dirY*40);
+                    transform.Translate(Vector3.up*dirY*40);
                 
                 break;
             case "Enemy":
@@ -49,7 +49,7 @@ public class Reposition : MonoBehaviour
                     Vector3 distVec = playerPos - myPos;
                     Vector3 ranVec = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0);
                     
-                    // 위치 차이 * 2로 플레이어 앞쪽에 랜덤 배치
+                    // 위치차이 * 2로 플레이어 앞쪽에 랜덤 배치
                     transform.Translate(distVec * 2 + ranVec);
                 }
                 break;

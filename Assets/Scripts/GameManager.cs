@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    private static bool autoStartAfterReload;
     
     [Header("Game Objects")]
     public Player player;
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour
     public LevelUp uiLevelUp;       // 레벨업 선택 UI
     public GameResult uiResult;   // 게임 오버/승리 결과창
     public GameObject enemyCleaner; // 승리시 남은 몬스터를 일괄 제거하기 위함(KillZone)
+    public GameObject uiGameStart;
+    public GameObject uiHUD;
 
     [Header("Play Time")] 
     public bool isLive;         // 일시정지용
@@ -23,7 +26,7 @@ public class GameManager : MonoBehaviour
     public int level;
     public int kill;
     public int exp;
-    public List<int> nextExp = new List<int> { 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 }; // 동적 배열을 위해 일반 배열 대신 리스트 자료구조 변경
+    public List<int> nextExp = new List<int> { 3, 5, 10, 20, 50, 100, 150, 210, 280, 360 }; // 동적 배열을 위해 일반 배열 대신 리스트 자료구조 변경
     public float health;
     public float maxHealth = 100;
 
@@ -32,10 +35,20 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+        if (!autoStartAfterReload) return;
+
+        autoStartAfterReload = false;
+        GameStart();
+    }
+
     // 기본적으로 아무것도 안쓰면 private.
     // public으로 바꾸는 이유는 인스펙터에 나타나고, OnClick Event 목록에 보여주기 위함.
     public void GameStart()
     {
+        uiGameStart.SetActive(false);
+        uiHUD.SetActive(true);
         Resume();
         health = maxHealth;         // 게임 시작 시 체력을 최대 체력으로 초기화
         uiLevelUp.Select(0);   // 기본무기 (0: 삽) 제공
@@ -85,6 +98,22 @@ public class GameManager : MonoBehaviour
     public void BackMenu()
     {
         SceneManager.LoadScene(0); // 0번에 등록된 씬 롣,
+    }
+
+    public void GameRetry()
+    {
+        autoStartAfterReload = true;
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void GameQuit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 
     private void Update()
